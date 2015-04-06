@@ -42,3 +42,81 @@ basic CRUD operations in our Express controller are:
 - articleById // sets the current article obj by its ID.
 - hasAuthorization  // methods checks if the current user created the current article.
 
+### Express routes
+
+
+assigning the express controller methods to REST endpoints in **app/routes/articles.js**
+- i.e. GET && POST
+- ~5 , 1/CRUD operation
+- list, new article, return article by ID, update article by ID, delete article by ID.
+
+
+
+#### express mocha tests
+tl;dr
+
+
+
+## AngularJS Front-End Module
+
+## Folder structure
+
+each angular module is organized in an isolated folder containing the logical structure of the module functionality.
+
+- assign client side code to our **public/modules/modules_name**
+
+inside each module we have included:
+- config
+- - any angularjs configurations, routes.js, angular routing
+- controllers
+- - angular controllers
+- services
+- - 
+- tests
+- views
+- - any partials views related to the articles module.
+
+
+### Angular JS Service `ngResouce`
+
+- allows easy connection to RESTful endpoints in Express
+- `$resource` when working w/ CRUD operations
+- ! warning when using `update` user `put`
+
+### angular js controller
+
+- in correspondence w/ CRUD operations
+
+
+### angular views!
+
+- the html template used per view in application.
+- renders the data that is passed through the controller.
+
+
+### angular js routes
+
+Angular `UI-Router` defines various routes of the module..
+This magic occurs only because each route is defined using the
+`$stateProvider` service, and defines a path to the themplate, which
+will be rendered when navigating to a specific URL.
+
+
+### angular js menu items
+
+enables to add menus firectly from the module configuration file.
+- look @ **articles.client.config.js**
+- a drop down menu for the topbar, handles `list articles` and `create` articles.
+
+
+--stopped at angular unit testing --
+
+
+## Summary:
+
+our backend consists of Express and middleware for handling data coming and going into the mongoose/mongod db. We structure our data via mongoose schemas, which are properties and a data obkect that can easily be passed around.
+
+
+
+
+
