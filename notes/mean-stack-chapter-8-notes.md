@@ -253,6 +253,42 @@ else {
 
 
 
+### Wiring Express Routes
+
+RESTful API architectural design.
+- the RESTful API provides a coherent service structure
+- that represents a set of actions you can perform on an application resource.
+
+
+common RESTful API rules:
+
+- base URI per resource, https://localhost:3000/articles
+- a data structure, JSON
+- usage of standard HTTP methods, get, post, put & delete.
+
+these rules allow properly routed HTTP requests to use their 
+rightful controller method.
+
+note we pass around a variable parameter being the `articleId`
+
+from here we wire up our routes w/ the corresponding methods made earlier.
+goto `app/routes`
+
+these routes will also include authentication routing.
+
+express `app.route()`
+
+
+### last configure in Express App
+
+goto `config/express.js` app a path to the newly created express app routes,
+this turns your web app into an easy api! 
+
+## Next is to use AngularJS to communicate w/ it.
+
+
+
+
 
 
 
