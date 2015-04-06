@@ -102,5 +102,157 @@ exports.create = function(req, res) // http req and res
 
 ```
 
+#### list, CRUD op
+
+- retreive list of existing article, using `list()` method
+
+```
+
+exports.list = function(req, res) {
+// use find() mongoose method.
+// may add additonal mongoose modifiers to query.
+  Article.find().sort('-created').populate('creator', 'firstName lastName fullName')
+  .exec(function(err, articles) {
+    if(err) {
+      return res.status(400).send({
+        message: getErrorMessage(err)
+      });
+    } else {
+      res.json(articles);
+    }
+  })
+}
+
+
+```
+
+### rest of CRUD operations
+
+will rely on middleware instread and handling routing parameters.
+using **read() middleware of the Express controller.**
+accomplished by reading the `articleId` from the URL paths.
+`app.param()` handles route parameters.
+
+
+```
+exports.articleById = function(req, res, next, id) {
+  Article.findById(id).populate('creator', 'firstName lastName fullName')
+  .exec(function(err, article){
+    if(err) return next(err);
+    if(!article) return next(new Error('failed to load article ' + id ));
+    
+    // if no errors produced, we continue..
+    req.article = article;
+    next();
+  });
+};
+
+```
+
+### our read()
+
+will simply output our article in json representation.
+
+```
+
+exports.read = function(req, res){
+  res.json(req.article);
+};
+
+```
+
+### our update()
+
+simple updates an existing article
+
+```
+
+exports.update = function(req, res) {
+  var article = req.article;
+  
+  article.title = req.body.title;
+  
+  article.content = req.body.content;
+  
+  article.save(function(err){
+    if(err){
+      return res.status(400).send({
+        message: getErrorMessage(err);
+      });
+    } else {
+      res.json(article);
+    }
+  })
+}
+
+```
+
+### simple CRUD delete() Express middleware controller
+
+using mongoose model `remove()` method to delete existing article from db.
+
+
+```
+
+exports.delete = function(req, res){
+  var article = req.article;
+  
+  article.remove(function(err){
+    if(err){
+      return res.status(400).send({
+        message: getErrorMessage(err);
+      });
+    } else {
+      res.json();
+    }
+  });
+};
+
+```
+that wraps up our CRUD operations
+
+## implement authentication middleware
+
+- need a `req.user` object to know a user is logged in
+- use Express users controller for solution.
+
+```
+
+exports.requiresLogin = function(req, res, next){
+if(!req.isAuthenitcated()) {
+  return res.status(401).send({
+    message: 'User is not logged in.';
+  });
+}
+next();
+};
+
+```
+
+this will require `passport` module
+
+### appending authorizations
+
+this code is to change the functionality so that only a user who created the 
+article to have control over deleting that article or not. This uses
+Express and Passport to work:
+
+```
+exports.hasAuthorization = function(req, res, next){
+  if(req.article.creator.id !== req.user.id){
+    return res.status(403).send({
+      message: 'user is not authorized';
+    });
+  } 
+}
+else {
+    next();
+  };
+
+```
+
+
+
+
 
 
